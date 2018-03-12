@@ -38,6 +38,7 @@ static int cmd_q(char *args) {
 
 static int cmd_help(char *args);
 static int cmd_si(char *args);
+static int cmd_info(char *args);
 static struct {
   char *name;
   char *description;
@@ -46,7 +47,9 @@ static struct {
   { "help", "Display informations about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-  { "si", "stop after executing N instructions", cmd_si},
+  { "si", "Stop after executing N instructions", cmd_si},
+  { "info", "Print the value of value", cmd_info},
+
   /* TODO: Add more commands */
 
 };
@@ -87,6 +90,47 @@ static int cmd_si(char *args){
       printf("illegal command '%s'\n", arg);
     }
     cpu_exec(i);
+  }
+
+  return 0;
+}
+
+static int cmd_info(char *args){
+  char *arg = strtok(NULL, " ");
+
+  if(arg == NULL){
+    printf("Error!\n");
+  }
+  else{
+    if(strcmp(arg, "r") == 0){
+      printf("eax:    0x%x\n",cpu.eax);
+      printf("ecx:    0x%x\n",cpu.ecx);
+      printf("edx:    0x%x\n",cpu.edx);
+      printf("ebx:    0x%x\n",cpu.ebx);
+      printf("esp:    0x%x\n",cpu.esp);
+      printf("ebp:    0x%x\n",cpu.ebp);
+      printf("esi:    0x%x\n",cpu.esi);
+      printf("edi:    0x%x\n",cpu.edi);
+      printf("ax:     0x%x\n",reg_w(R_AX));
+      printf("cx:     0x%x\n",reg_w(R_CX));
+      printf("dx:     0x%x\n",reg_w(R_DX));
+      printf("bx:     0x%x\n",reg_w(R_BX));
+      printf("sp:     0x%x\n",reg_w(R_SP));
+      printf("bp:     0x%x\n",reg_w(R_BP));
+      printf("si:     0x%x\n",reg_w(R_SI));
+      printf("di:     0x%x\n",reg_w(R_DI));
+      printf("al:     0x%x\n",reg_b(R_AL));
+      printf("cl:     0x%x\n",reg_b(R_CL));
+      printf("dl:     0x%x\n",reg_b(R_DL));
+      printf("bl:     0x%x\n",reg_b(R_BL));
+      printf("ah:     0x%x\n",reg_b(R_AH));
+      printf("ch:     0x%x\n",reg_b(R_CH));
+      printf("dh:     0x%x\n",reg_b(R_DH));
+      printf("bh:     0x%x\n",reg_b(R_BH));
+    }
+    else{
+      printf("default]n");
+    }
   }
 
   return 0;
