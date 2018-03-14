@@ -108,9 +108,9 @@ static int cmd_info(char *args){
     if(strcmp(arg, "r") == 0){
       int i;
       for(i = 0;i < 8;i++){
-	printf("%10s %16x %16d\n",regsl[i],reg_l(i),reg_l(i));
+	printf("%10s 0x%16x %16d\n",regsl[i],reg_l(i),reg_l(i));
       }
-      printf("       eip%16x %16d\n",cpu.eip,cpu.eip);
+      printf("       eip0x%16x %16d\n",cpu.eip,cpu.eip);
     }
     else{
       printf("defaultn");
@@ -143,7 +143,7 @@ void ui_mainloop(int is_batch_mode) {
     }
 
 #ifdef HAS_IOE
-    extern void sdl_clear_event_queue(void);
+    extern void dl_clear_event_queue(void);
     sdl_clear_event_queue();
 #endif
 
