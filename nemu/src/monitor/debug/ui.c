@@ -106,17 +106,14 @@ static int cmd_info(char *args){
   }
   else{
     if(strcmp(arg, "r") == 0){
-      printf("eax:    0x%x     %d\n",cpu.gpr[0]._32,cpu.gpr[0]._32);
-      printf("ecx:    0x%x\n",cpu.ecx);
-      printf("edx:    0x%x\n",cpu.edx);
-      printf("ebx:    0x%x\n",cpu.ebx);
-      printf("esp:    0x%x\n",cpu.esp);
-      printf("ebp:    0x%x\n",cpu.ebp);
-      printf("esi:    0x%x\n",cpu.esi);
-      printf("edi:    0x%x\n",cpu.edi);
+      int i;
+      for(i = 0;i < 8;i++){
+	printf("%10s %16x %16d\n",regsl[i],reg_l(i),reg_l(i));
+      }
+      printf("eip           %16x %16d\n",cpu.eip,cpu.eip);
     }
     else{
-      printf("default]n");
+      printf("defaultn");
     }
   }
 
