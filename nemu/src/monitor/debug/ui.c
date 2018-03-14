@@ -39,6 +39,7 @@ static int cmd_q(char *args) {
 static int cmd_help(char *args);
 static int cmd_si(char *args);
 static int cmd_info(char *args);
+static int cmd_x(char *args);
 static struct {
   char *name;
   char *description;
@@ -49,7 +50,7 @@ static struct {
   { "q", "Exit NEMU", cmd_q },
   { "si", "Stop after executing N instructions", cmd_si},
   { "info", "Print the value of value", cmd_info},
-
+  { "x","Scan the memory", cmd_x},
   /* TODO: Add more commands */
 
 };
@@ -100,13 +101,13 @@ static int cmd_si(char *args){
 
 static int cmd_info(char *args){
   char *arg = strtok(NULL, " ");
-
+  int i;
   if(arg == NULL){
     printf("Error!\n");
   }
   else{
     if(strcmp(arg, "r") == 0){
-      int i;
+      printf("    register        Hex     Decimal");
       for(i = 0;i < 8;i++){
 	printf("%10s %16x %16d\n",regsl[i],reg_l(i),reg_l(i));
       }
@@ -117,6 +118,49 @@ static int cmd_info(char *args){
     }
   }
 
+  return 0;
+}
+
+static int cmd_x(char *args){
+  char *arg_1 = strtok(NULL, " ");
+  char cmd_line[81] = "";
+  while(1){
+    char *arg_2 = strtok(NULL, " ");
+    if(arg_2 == NULL){
+      break;
+    }
+    strcat(cmd_line, arg_2);
+  }
+
+  bool flag;
+  uint32_t ans = expr(cmd_line, &flag);
+  if(flag == true){
+    uint32_t addr = ans;
+    int t_s = atoi(arg_1);
+    if(t_s <= 0){
+      printf("illegal number\n");
+      return 0;
+    }
+    int t_c = 0;
+    if(t_c > 100){
+      printf("too big number,overflow\n");
+      return 0;
+    }
+    printf("Address :          \n");
+    for(;t_c < t_s;t_c++){
+      printf("%16x     %5c  ",addr,vaddr_read(addr,8));
+      int j = 0;
+      printf("0x");
+      for(;j < 4;j++){
+	printf("%02x",pmem[addr+j]);
+      }
+      printf("\n");
+      addr = addr + 4;
+    }
+  }
+  else{
+    printf("illegal Command.\n");
+  }
   return 0;
 }
 
