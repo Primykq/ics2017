@@ -110,7 +110,7 @@ static int cmd_info(char *args){
       for(i = 0;i < 8;i++){
 	printf("%10s 0x%16x %16d\n",regsl[i],reg_l(i),reg_l(i));
       }
-      printf("       eip0x%16x %16d\n",cpu.eip,cpu.eip);
+      printf("       eip%16x %16d\n",cpu.eip,cpu.eip);
     }
     else{
       printf("defaultn");
