@@ -122,44 +122,37 @@ static int cmd_info(char *args){
 }
 
 static int cmd_x(char *args){
-  char *arg_1 = strtok(NULL, " ");
-  char cmd_line[81] = "";
-  while(1){
-    char *arg_2 = strtok(NULL, " ");
-    if(arg_2 == NULL){
-      break;
-    }
-    strcat(cmd_line, arg_2);
-  }
-
-  bool flag;
-  uint32_t ans = expr(cmd_line, &flag);
-  if(flag == true){
-    uint32_t addr = ans;
-    int t_s = atoi(arg_1);
-    if(t_s <= 0){
-      printf("illegal number\n");
-      return 0;
-    }
-    int t_c = 0;
-    if(t_c > 100){
-      printf("too big number,overflow\n");
-      return 0;
-    }
-    printf("Address :          \n");
-    for(;t_c < t_s;t_c++){
-      printf("%16x     %5c  ",addr,vaddr_read(addr,8));
-      int j = 0;
-      printf("0x");
-      for(;j < 4;j++){
-	printf("%02x",pmem[addr+j]);
-      }
-      printf("\n");
-      addr = addr + 4;
-    }
+  char *arg_1 = strtok(NULL," ");
+  char *arg_2 = strtok(NULL," ");
+  if(arg_1 == NULL || arg_2 == NULL){
+    printf("Illegal command\n");
+    return 0;
   }
   else{
-    printf("illegal Command.\n");
+    int n = atoi(arg_1);
+    long addr = strtol(arg_2,NULL,16);
+    int i = 0;
+    for(;i < n;i++){
+      int j = 0;
+      char s[20];
+      sprintf(s,"%lx: ",addr);
+      printf("0x%s ",s);
+      printf("0x");
+      for(;j < 8;j++){
+	printf("%02x",pmem[addr+j]);
+      }
+      printf(" ");
+      j = 0;
+      if(++i >= n){
+        break;
+      }
+      addr = addr + 8;
+      for(;j < 8;j++){
+        printf("%02x",pmem[addr+j]);
+      }
+      printf("\n");
+      addr = addr + 8;
+    }
   }
   return 0;
 }
