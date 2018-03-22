@@ -107,7 +107,7 @@ static int cmd_info(char *args){
   }
   else{
     if(strcmp(arg, "r") == 0){
-      printf("    register        Hex     Decimal");
+      printf("    register        Hex     Decimal\n");
       for(i = 0;i < 8;i++){
 	printf("%10s %16x %16d\n",regsl[i],reg_l(i),reg_l(i));
       }
