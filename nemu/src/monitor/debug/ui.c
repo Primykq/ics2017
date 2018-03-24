@@ -149,7 +149,7 @@ static int cmd_x(char *args){
     for(temp_2 = 0;temp_2 < temp;temp_2++){
       printf("%#-16x%#010x%5c", addr, vaddr_read(addr, 8),' ');
       int i = 0;
-      printf("\n");
+      printf("0x");
       for(;i < 4;i++){
 	printf("%0x2",pmem[addr+i]);
       }
