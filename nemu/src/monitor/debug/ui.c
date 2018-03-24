@@ -123,42 +123,36 @@ static int cmd_info(char *args){
 
 static int cmd_x(char *args){
   char *arg_1 = strtok(NULL, " ");
-  char cmd[81] = "";
-  while(true){
-    char *arg_2 = strtok(NULL, " ");
-    if(arg_2 == NULL){
-      break;
-    }
-    strcat(cmd, arg_2);
-  }
-  bool flag;//for judgement
-  uint32_t re = expr(cmd, &flag);
-  if(flag == true){
-    uint32_t addr = re;
-    int temp = atoi(arg_1);
-    if(temp <= 0){
-      printf("ellegal Number\n");
-      return 0;
-    }  
-    int temp_2 = 0;
-    if(temp_2 > 100){
-      printf("Over Flow,too big number\n");
-      return 0;
-    }
-    printf("address:        BigEndian     LittleEndian\n");
-    for(temp_2 = 0;temp_2 < temp;temp_2++){
-      printf("%#-16x%#010x%5c", addr, vaddr_read(addr, 8),' ');
-      int i = 0;
-      printf("0x");
-      for(;i < 4;i++){
-	printf("%0x2",pmem[addr+i]);
-      }
-      printf("\n");
-      addr += 4;
-    }
+  char *arg_2 = strtok(NULL, " ");
+  if(arg_1 == NULL || arg_2 == NULL){
+    printf("Illegal Command\n");
+    return 0;
   }
   else{
-    printf("Ellegal Command\n");
+    int n = atoi(arg_1);
+    long addr = strtol(arg_2, NULL, 16);
+    int i = 0;
+    for(;i < n;i++){
+      int j = 0;
+      char s[20];
+      sprintf(s,"%lx: ",addr);
+      printf("0x%s",s);
+      printf("0x");
+      for(;j < 8;j++){
+	printf("%02x",pmem[addr+j]);
+      }
+      printf(" ");
+      j = 0;
+      if(++i >= n){
+	break;
+      }
+      addr = addr + 8;
+      for(;j < 8;j++){
+	printf("%02x",pmem[addr+j]);
+      }
+      printf("\n");
+      addr = addr + 8;
+    }
   }
   return 0;
 }
