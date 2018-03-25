@@ -30,6 +30,7 @@ static struct rule {
   {" +", TK_NOTYPE},    // spaces
   {"\\+", TK_PLUS},         // plus
   {"==", TK_EQ},        // equal
+  //my rules
   {"\\-",TK_SUB},       // sub
   {"\\*",TK_MULTI},     // multiply
   {"/",TK_DIVI},        // Devision
@@ -68,11 +69,7 @@ Token tokens[32];
 int nr_token;
 
 static bool make_token(char *e) {
-  int position = 0;
-  int i;
-  regmatch_t pmatch;
-
-  nr_token = 0;
+  int position = 0; int i; regmatch_t pmatch; nr_token = 0;
 
   while (e[position] != '\0') {
     /* Try all rules one by one. */
@@ -91,6 +88,19 @@ static bool make_token(char *e) {
          */
 
         switch (rules[i].token_type) {
+          case TK_NOTYPE: {
+	    printf("space\n");
+	    break;
+	  }
+	  case TK_PLUS: case TK_EQ: case TK_MULTI: case TK_SUB: 
+	  case TK_DIVI: case TK_LPA: case TK_RPA:
+	  case TK_DEC: {
+	    tokens[nr_token].type = rules[i].token_type;
+	    strncpy(tokens[nr_token].str,substr_start,substr_len);
+	    tokens[nr_token].str[substr_len] = '\0';
+	    nr_token++;
+	    break;
+	  }
           default: TODO();
         }
 
