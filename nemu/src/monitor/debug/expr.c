@@ -5,7 +5,7 @@
  */
 #include <sys/types.h>
 #include <regex.h>
-
+#define FAULT 0X80000000
 enum {
   TK_NOTYPE = 256, TK_EQ,
   TK_DEC,//Decimal Number
@@ -97,6 +97,7 @@ static bool make_token(char *e) {
 	    tokens[nr_token].type = rules[i].token_type;
 	    strncpy(tokens[nr_token].str,substr_start,substr_len);
 	    tokens[nr_token].str[substr_len] = '\0';
+	    nr_token++;
 	  }
           default: TODO();
         }
