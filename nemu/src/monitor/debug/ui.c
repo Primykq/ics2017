@@ -40,6 +40,7 @@ static int cmd_help(char *args);
 static int cmd_si(char *args);
 static int cmd_info(char *args);
 static int cmd_x(char *args);
+static int cmd_p(char *args);
 static struct {
   char *name;
   char *description;
@@ -51,6 +52,7 @@ static struct {
   { "si", "Stop after executing N instructions", cmd_si},
   { "info", "Print the value of value", cmd_info},
   { "x","Scan the memory", cmd_x},
+  {"p","Expression evaluation",cmd_p}
   /* TODO: Add more commands */
 
 };
@@ -155,6 +157,31 @@ static int cmd_x(char *args){
     }
   }
   return 0;
+}
+
+static int cmd_p(char *args){
+  char cmd[81] = "\0";
+  while(true){
+    char *arg = strtok(NULL, " ");
+    if(arg == NULL){
+      break;
+    } 
+    if(strlen(arg) + strlen(cmd) > 80){
+      printf("Overflow\n");
+      return 0;
+    }
+    strcat(cmd,arg);
+  }
+  bool flag;
+  uint32_t re = expr(cmd,&flag);
+  if(flag == true){
+    printf("result = %d\n",re);
+  }
+  else{
+    printf("Illegal Command\n");
+  }
+  return 0;
+
 }
 
 void ui_mainloop(int is_batch_mode) {
