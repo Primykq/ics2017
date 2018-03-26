@@ -289,11 +289,10 @@ uint32_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
+  *success = true;
   int re = eval(0, nr_token - 1);
   if(re == 0x80000000){
     *success = false;
   }
   return re;
-	
-  return 0;
 }
