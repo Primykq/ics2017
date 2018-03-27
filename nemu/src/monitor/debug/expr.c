@@ -214,7 +214,7 @@ uint32_t eval(uint32_t p,uint32_t q){
     return eval(p + 1,q - 1);
   }
   else{
-    int op_type = 0x7fffffff;
+    int op_type = 99999;
     int op = 0;
     int count = p;
     for(;count <= q;count++){
@@ -263,7 +263,8 @@ uint32_t eval(uint32_t p,uint32_t q){
 	}
 	case TK_RPA:{
 	  if(is_empty(S) == true){
-	    panic("exp is not the BNF\n");
+	    printf("the stack is empty\n");
+//	    panic("exp is not the BNF\n");
 	  }
 	  pop(S);
 	  break;
