@@ -212,6 +212,9 @@ uint32_t eval(uint32_t p,uint32_t q){
       assert(0);
     }
   }
+  else if(check_parenthese(p, q) == true){
+    return eval(p + 1,q - 1);
+  }
   else{
     for(;count <= q;count++){
       switch(tokens[count].type){
@@ -274,7 +277,7 @@ uint32_t eval(uint32_t p,uint32_t q){
     case TK_PLUS: return val1 + val2;
     case TK_SUB:  return val1 - val2;
     case TK_MULTI: return val1 * val2;
-    case TK_DIVI: return val1 + val2;
+    case TK_DIVI: return val1 / val2;
     default: {
 	printf("exp is wrong\n");
 	assert(0);
