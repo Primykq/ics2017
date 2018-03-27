@@ -175,7 +175,7 @@ static int cmd_p(char *args){
   bool flag;
   uint32_t re = expr(cmd,&flag);
   if(flag == true){
-    printf("result = %d\n",re);
+    printf("%s =0x%x(%d)\n",cmd,re,re);
   }
   else{
     printf("Illegal Command\n");
