@@ -15,6 +15,8 @@ enum {
   TK_DIVI,//"/"
   TK_LPA,//"("
   TK_RPA,//")"
+  TK_NEGA,TK_DEREF,//symbol
+  TK_REG,//register
   /* TODO: Add more token types */
 
 };
@@ -37,6 +39,7 @@ static struct rule {
   {"\\(",TK_LPA},       // left parenthesis
   {"\\)",TK_RPA},       // right parenthesis
   {"[0-9]+",TK_DEC},    // decimal number
+  {"\\$[A-Za-z]+",TK_REG}, // register
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
@@ -91,7 +94,8 @@ static bool make_token(char *e) {
 	    printf("space\n");
 	    break;
 	  }
-	  case TK_PLUS: case TK_EQ: case TK_MULTI: case TK_SUB: 
+	  case TK_SUB:
+	  case TK_PLUS: case TK_EQ: case TK_MULTI:  
 	  case TK_DIVI: case TK_LPA: case TK_RPA:
 	  case TK_DEC: {
 	    tokens[nr_token].type = rules[i].token_type;
@@ -209,6 +213,14 @@ uint32_t eval(uint32_t p,uint32_t q){
       if(flag == true){
         op = count;
 	op_type = tokens[count].type;
+      }
+    }
+    if(op == 0){
+      if(tokens[p].type == TK_NEGA){
+        return 0 - eval(p + 1, q);
+      }
+      else{
+        panic("Something seems wrong\n");
       }
     }
     uint32_t val1 = eval(p, op - 1);
