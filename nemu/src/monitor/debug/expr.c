@@ -117,44 +117,8 @@ static bool make_token(char *e) {
 }
 
 #define STACKSIZE 31 //the max size of stack
-typedef struct Stack{
-  char stack[STACKSIZE];
-  int top;
-}my_stack;
-static int push(my_stack S, char ch);
-static int pop(my_stack S);
 void my_printf(int p,int q);
 
-
-//Is the stack empty?
-static bool is_empty(my_stack S){
-  if(S.top == 0){
-    return true;
-  }
-  else{
-    return false;
-  }
-}
-
-//push
-static int push(my_stack S, char ch){
-  if(S.top == STACKSIZE){
-    panic("Overflow\n");
-    return -1;
-  }
-  S.stack[S.top] = ch;
-  S.top++;
-  return 0;
-}
-
-//pop
-static int pop(my_stack S){
-  if(is_empty(S)){
-    panic("Error,Stack is empty\n");
-  }
-  S.top--;
-  return 0;
-}
 
 //printf
 void my_printf(int p,int q){
@@ -196,8 +160,7 @@ bool check_parenthese(uint32_t p,uint32_t q){
 #include<stdlib.h>
 
 uint32_t eval(uint32_t p,uint32_t q){
-  my_stack S;
-  S.top = 0;
+  int value = 0;
   if(p > q){
     panic("expression is wrong\n");
   }
@@ -220,27 +183,27 @@ uint32_t eval(uint32_t p,uint32_t q){
     for(;count <= q;count++){
       bool flag = false;
       if(tokens[count].type == TK_PLUS || tokens[count].type == TK_SUB){
-        if(is_empty(S) == false || op_type < TK_PLUS){
+        if(value != 0 || op_type < TK_PLUS){
 	  continue;
 	}
 	flag = true;
-      }
+      }  
       if(tokens[count].type == TK_MULTI || tokens[count].type == TK_DIVI){
-        if(is_empty(S) == false || op_type < TK_MULTI){
+        if(value != 0  || op_type < TK_MULTI){
 	  continue;
 	}
 	flag = true;
       }
       if(tokens[count].type == TK_LPA){
-        push(S,'a');
+        value++;
 	continue;
       }
       if(tokens[count].type == TK_RPA){
-        if(is_empty(S) == false){
+        if(value == 0){
 	  printf("exp is wrong\n");
 	  return FAULT;
 	}
-	pop(S);
+	value--;
 	continue;
       }
       if(flag == true){
