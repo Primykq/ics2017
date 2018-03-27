@@ -94,7 +94,18 @@ static bool make_token(char *e) {
 	    printf("space\n");
 	    break;
 	  }
-	  case TK_SUB:
+	  case TK_SUB: {
+	    if(nr_token == 0 || tokens[nr_token - 1].type != TK_DEC){
+	      tokens[nr_token].type = TK_NEGA;
+	    }
+	    else{
+	      tokens[nr_token].type = TK_SUB;
+	    }
+	    strncpy(tokens[nr_token].str, substr_start, substr_len);
+	    tokens[nr_token].str[substr_len] = '\0';
+	    nr_token++;
+	    break;
+	  }
 	  case TK_PLUS: case TK_EQ: case TK_MULTI:  
 	  case TK_DIVI: case TK_LPA: case TK_RPA:
 	  case TK_DEC: {
