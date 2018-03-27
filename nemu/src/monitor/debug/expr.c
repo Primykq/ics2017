@@ -198,9 +198,6 @@ bool check_parenthese(uint32_t p,uint32_t q){
 uint32_t eval(uint32_t p,uint32_t q){
   my_stack S;
   S.top = 0;
-  int op_type = 0x7fffffff;
-  int op = 0;
-  int count = p;
   if(p > q){
     panic("expression is wrong\n");
   }
@@ -217,6 +214,9 @@ uint32_t eval(uint32_t p,uint32_t q){
     return eval(p + 1,q - 1);
   }
   else{
+    int op_type = 0x7fffffff;
+    int op = 0;
+    int count = p;
     for(;count <= q;count++){
       switch(tokens[count].type){
         case TK_PLUS:{
@@ -270,17 +270,17 @@ uint32_t eval(uint32_t p,uint32_t q){
 	}
       }
     }
-  }
-  uint32_t val1 = eval(p, op - 1);
-  uint32_t val2 = eval(op + 1, q);
-  switch(op_type){
-    case TK_PLUS: return val1 + val2;
-    case TK_SUB:  return val1 - val2;
-    case TK_MULTI: return val1 * val2;
-    case TK_DIVI: return val1 / val2;
-    default: {
+    uint32_t val1 = eval(p, op - 1);
+    uint32_t val2 = eval(op + 1, q);
+    switch(op_type){
+      case TK_PLUS: return val1 + val2;
+      case TK_SUB:  return val1 - val2;
+      case TK_MULTI: return val1 * val2;
+      case TK_DIVI: return val1 / val2;
+      default: {
 	printf("exp is wrong\n");
 	assert(0);
+      }
     }
   }
   return -1;
