@@ -17,6 +17,9 @@ enum {
   TK_RPA,//")"
   TK_NEGA,TK_DEREF,//symbol
   TK_REG,//register
+  TK_NEQ,// "!="
+  TK_OR,TK_AND,TK_NOT,// || && !
+  TK_HEX,
   /* TODO: Add more token types */
 
 };
@@ -40,6 +43,11 @@ static struct rule {
   {"\\)",TK_RPA},       // right parenthesis
   {"[0-9]+",TK_DEC},    // decimal number
   {"\\$[A-Za-z]+",TK_REG}, // register
+  {"!=",TK_NEQ},         //!=
+  {"!",TK_NOT},          // !
+  {"\\|\\|",TK_OR},      // ||
+  {"&&",TK_AND},
+  {"Ox[A-Za-z0-9]+",TK_HEX},
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
