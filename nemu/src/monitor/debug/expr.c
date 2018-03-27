@@ -218,57 +218,34 @@ uint32_t eval(uint32_t p,uint32_t q){
     int op = 0;
     int count = p;
     for(;count <= q;count++){
-      switch(tokens[count].type){
-        case TK_PLUS:{
-	  if(is_empty(S) == false){
-	    break;
-	  }
-	  op = count;
-	  op_type = TK_PLUS;
-	  break;
+      bool flag = false;
+      if(tokens[count].type == TK_PLUS || tokens[count].type == TK_SUB){
+        if(is_empty(S) == false || op_type < TK_PLUS){
+	  continue;
 	}
-	case TK_SUB:{
-	  if(is_empty(S) == false){
-	     break;
-	  }
-	  op = count;
-	  op_type = TK_SUB;
-          break;		      
-        }
-	case TK_MULTI:{
-	  if(is_empty(S) == false){
-	    break;
-	  }
-	  if(op_type < TK_MULTI){
-	    break;
-	  }
-	  op = count;
-	  op_type = TK_MULTI;
-	  break;
+	flag = true;
+      }
+      if(tokens[count].type == TK_MULTI || tokens[count].type == TK_DIVI){
+        if(is_empty(S) == false || op_type < TK_MULTI){
+	  continue;
 	}
-	case TK_DIVI:{
-	  if(is_empty(S) == false){
-	    break;
-	  }
-	  if(op_type < TK_MULTI){
-	    break;
-	  }
-	  op = count;
-	  op_type = TK_DIVI;
-	  break;
+	flag = true;
+      }
+      if(tokens[count].type == TK_LPA){
+        push(S,'a');
+	continue;
+      }
+      if(tokens[count].type == TK_RPA){
+        if(is_empty(S) == false){
+	  printf("exp is wrong\n");
+	  return FAULT;
 	}
-	case TK_LPA:{
-	  push(S, '1');
-	  break;
-	}
-	case TK_RPA:{
-	  if(is_empty(S) == true){
-	    printf("the stack is empty\n");
-//	    panic("exp is not the BNF\n");
-	  }
-	  pop(S);
-	  break;
-	}
+	pop(S);
+	continue;
+      }
+      if(flag == true){
+        op = count;
+	op_type = tokens[count].type;
       }
     }
     uint32_t val1 = eval(p, op - 1);
