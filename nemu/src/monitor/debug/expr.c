@@ -262,7 +262,7 @@ uint32_t eval(uint32_t p,uint32_t q){
 	  break;
 	}
 	case TK_RPA:{
-	  if(is_empty(S) == false){
+	  if(is_empty(S) == true){
 	    panic("exp is not the BNF\n");
 	  }
 	  pop(S);
