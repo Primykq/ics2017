@@ -77,3 +77,42 @@ void free_wp(int n){
     }
   }
 }
+
+bool check_wp(){
+  WP *temp = head;
+  bool r = false;//the whole result
+  while(temp != NULL){
+    bool flag = false;
+    uint32_t re = expr(temp->exp, &flag);
+    if(flag == true){
+      if(re == temp->value){
+        temp = temp->next;
+	continue;
+      }
+      else{
+        r = true;
+	printf("watchpoint %d : %s\n\n",temp->NO,temp->exp);
+	printf("Old value = 0x%08x\nNew value = 0x%08x\n",temp->value, re);
+	temp->value = re;
+      }
+    }
+    else{
+      printf("wrong expression");
+    }
+    temp = temp->next;
+  }
+  return r;
+}
+
+void show_used_wp(){
+  if(head == NULL){
+    printf("no watchpoint\n");
+    return ;
+  }
+  WP *temp = head;
+  printf("watchpoints exit, they are: \n");
+  while(temp != NULL){
+    printf("%-8d%s\n",temp->NO, temp->exp);
+    temp = temp->next;
+  }
+}
