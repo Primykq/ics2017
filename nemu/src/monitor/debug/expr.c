@@ -246,6 +246,24 @@ uint32_t eval(uint32_t p,uint32_t q){
     int count = p;
     for(;count <= q;count++){
       bool flag = false;
+      if(tokens[count].type == TK_OR){
+        if(value != 0){
+	  continue;
+	}
+	flag = true;
+      }
+      if(tokens[count].type == TK_AND){
+        if(value != 0 || op_type < TK_AND){
+	  continue;
+	}
+	flag = true;
+      }
+      if(tokens[count].type == TK_EQ || tokens[count].type == TK_NEQ){
+        if(value != 0 || op_type < TK_EQ){
+	  continue;
+	}
+	flag = true;
+      }
       if(tokens[count].type == TK_PLUS || tokens[count].type == TK_SUB){
         if(value != 0 || op_type < TK_PLUS){
 	  continue;
@@ -279,24 +297,37 @@ uint32_t eval(uint32_t p,uint32_t q){
       if(tokens[p].type == TK_NEGA){
         return 0 - eval(p + 1, q);
       }
+      else if(tokens[p].type == TK_NOT){
+        return !(eval(p+1, q));
+      }
+      else if(tokens[p].type == TK_DEREF){
+        return vaddr_read(eval(p+1, q),4);
+      }
       else{
         panic("Something seems wrong\n");
       }
     }
     uint32_t val1 = eval(p, op - 1);
     uint32_t val2 = eval(op + 1, q);
+    if(val1 == FAULT || val2 == FAULT){
+      return FAULT;
+    }
     switch(op_type){
       case TK_PLUS: return val1 + val2;
       case TK_SUB:  return val1 - val2;
       case TK_MULTI: return val1 * val2;
       case TK_DIVI: return val1 / val2;
+      case TK_EQ: return val1 == val2;
+      case TK_NEQ: return val1 != val2;
+      case TK_AND: return val1 && val2;
+      case TK_OR:  return val1 || val2;
       default: {
 	printf("exp is wrong\n");
 	assert(0);
       }
     }
   }
-  return -1;
+  return FAULT;
 }
 
 uint32_t expr(char *e, bool *success) {
