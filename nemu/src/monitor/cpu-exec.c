@@ -11,7 +11,7 @@
 int nemu_state = NEMU_STOP;
 
 void exec_wrapper(bool);
-
+bool check_wp();
 /* Simulate how the CPU works. */
 void cpu_exec(uint64_t n) {
   if (nemu_state == NEMU_END) {
@@ -29,6 +29,10 @@ void cpu_exec(uint64_t n) {
 
 #ifdef DEBUG
     /* TODO: check watchpoints here. */
+    bool wp_changed = check_wp();
+    if(wp_changed == true){
+      nemu_state = NEMU_STOP;
+    }
 
 #endif
 
