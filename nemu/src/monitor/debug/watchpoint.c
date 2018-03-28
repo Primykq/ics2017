@@ -26,6 +26,7 @@ WP* new_WP(){
     return NULL;
   }
   WP* tempw = free_;
+  free_ = free_->next;
   if(head == NULL){
     head = tempw;
   }
