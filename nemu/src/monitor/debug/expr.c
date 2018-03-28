@@ -153,19 +153,6 @@ static bool make_token(char *e) {
   return true;
 }
 
-#define STACKSIZE 31 //the max size of stack
-void my_printf(int p,int q);
-
-
-//printf
-void my_printf(int p,int q){
-  int count = p;
-  for(;count <= q;count++){
-    printf("%s",tokens[count].str);
-  }
-  printf("\n");
-}
-
 //check parentheses
 bool check_parenthese(uint32_t p,uint32_t q){
   int value = 0;
