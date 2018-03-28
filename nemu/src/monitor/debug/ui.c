@@ -8,7 +8,8 @@
 #include <readline/history.h>
 
 void cpu_exec(uint64_t);
-
+WP* new_WP();
+void free_wp(int n);
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 char* rl_gets() {
   static char *line_read = NULL;
@@ -41,6 +42,8 @@ static int cmd_si(char *args);
 static int cmd_info(char *args);
 static int cmd_x(char *args);
 static int cmd_p(char *args);
+static int cmd_w(char *args);
+static int cmd_d(char *args);
 static struct {
   char *name;
   char *description;
@@ -52,7 +55,9 @@ static struct {
   { "si", "Stop after executing N instructions", cmd_si},
   { "info", "Print the value of value", cmd_info},
   { "x","Scan the memory", cmd_x},
-  {"p","Expression evaluation",cmd_p}
+  { "p","Expression evaluation",cmd_p},
+  { "w","new a watchpoint",cmd_w},
+  { "d","delete a watchpoint",cmd_d}
   /* TODO: Add more commands */
 
 };
@@ -176,6 +181,64 @@ static int cmd_p(char *args){
   uint32_t re = expr(cmd,&flag);
   if(flag == true){
     printf("%s =0x%x(%d)\n",cmd,re,re);
+  }
+  else{
+    printf("Illegal Command\n");
+  }
+  return 0;
+
+}
+//new a watchpoint
+static int cmd_w(char *args){
+  char cmd[80] = "\0";
+  while(true){
+    char *arg = strtok(NULL, " ");
+    if(arg == NULL){
+      break;
+    }
+    if(strlen(arg) + strlen(cmd) > 80){
+      printf("Overflow\n");
+      return 0;
+    }
+    strcat(cmd, arg);
+  }
+  bool flag;
+  uint32_t re = expr(cmd, &flag);
+  if(flag == true){
+    WP *tempw = NULL;
+    tempw = new_WP();
+    if(tempw == NULL){
+      printf("watchpoint overflow\n");
+      return 0;
+    }
+    strcpy(tempw->exp, cmd);
+    tempw->value = re;
+    printf("Watchpoint %d: %s\n",tempw->NO, cmd);
+  }
+  else{
+    printf("wrong exp\n");
+  }
+  return 0;
+}
+
+//delete watchpoint
+static int cmd_d(char *args){
+  char cmd[80] = "\0";
+  while(true){
+    char *arg = strtok(NULL, " ");
+    if(arg == NULL){
+      break;
+    }
+    if(strlen(arg) + strlen(cmd) > 80){
+      printf("Buffer Overflow\n");
+      return 0;
+    }
+    strcat(cmd, arg);
+  }
+  bool flag;
+  uint32_t re = expr(cmd, &flag);
+  if(flag == true){
+    free_wp(re);
   }
   else{
     printf("Illegal Command\n");
