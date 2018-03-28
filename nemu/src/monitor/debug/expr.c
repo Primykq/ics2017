@@ -114,9 +114,23 @@ static bool make_token(char *e) {
 	    nr_token++;
 	    break;
 	  }
-	  case TK_PLUS: case TK_EQ: case TK_MULTI:  
+	  case TK_MULTI: {
+	    if(nr_token == 0 || (tokens[nr_token-1].type != TK_DEC && tokens[nr_token-1].type != TK_HEX && tokens[nr_token-1].type!= TK_REG && tokens[nr_token-1].type != TK_RPA)){
+	      tokens[nr_token].type = TK_DEREF;
+	    }
+	    else{
+	      tokens[nr_token].type = TK_MULTI;
+	    }
+	    strncpy(tokens[nr_token].str, substr_start, substr_len);
+	    tokens[nr_token].str[substr_len] = '\0';
+	    nr_token++;
+	    break;
+	  }
+	  case TK_OR: case TK_AND:case TK_NOT:
+	  case TK_NEQ:
+	  case TK_PLUS: case TK_EQ:  
 	  case TK_DIVI: case TK_LPA: case TK_RPA:
-	  case TK_DEC: {
+	  case TK_DEC: case TK_HEX: case TK_REG: {
 	    tokens[nr_token].type = rules[i].token_type;
 	    strncpy(tokens[nr_token].str,substr_start,substr_len);
 	    tokens[nr_token].str[substr_len] = '\0';
@@ -191,9 +205,36 @@ uint32_t eval(uint32_t p,uint32_t q){
     if(tokens[p].type == TK_DEC){
       return atoi(tokens[p].str);
     }
+    else if(tokens[p].type == TK_HEX){
+      return strtol(tokens[p].str, NULL, 16);
+    }
+    else if(tokens[p].type == TK_REG){
+      int count = 0;
+      char str[10];
+      for(count = 1;count < strlen(tokens[p].str);count++){
+        str[count-1] = tokens[p].str[count];
+      }
+      str[count-1] = '\0';
+      for(count = 0;count < 8;count++){
+        if(strcmp(str, regsl[count]) == 0){
+	  return reg_l(count);
+	}
+	else if(strcmp(str, regsw[count]) == 0){
+	  return reg_w(count);
+	}
+	else if(strcmp(str, regsb[count]) == 0){
+	  return reg_b(count);
+	}
+      }
+      if(strcmp(str,"eip") == 0){
+        return cpu.eip;
+      }
+      printf("wrong register\n");
+      return FAULT;
+    }
     else{
       printf("expression is wrong\n");
-      assert(0);
+      return FAULT;
     }
   }
   else if(check_parenthese(p, q) == true){
