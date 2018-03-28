@@ -62,10 +62,7 @@ void init_regex() {
   char error_msg[128];
   int ret;
 
-  for (i = 0; i < NR_REGEX; i ++) {
-    ret = regcomp(&re[i], rules[i].regex, REG_EXTENDED);
-    if (ret != 0) {
-      regerror(ret, &re[i], error_msg, 128);
+  for (i = 0; i < NR_REGEX; i ++) { ret = regcomp(&re[i], rules[i].regex, REG_EXTENDED); if (ret != 0) { regerror(ret, &re[i], error_msg, 128);
       panic("regex compilation failed: %s\n%s", error_msg, rules[i].regex);
     }
   }
@@ -145,7 +142,6 @@ static bool make_token(char *e) {
     }
 
     if (i == NR_REGEX) {
-      printf("i = NR_REGEX\n");
       printf("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
       return false;
     }
