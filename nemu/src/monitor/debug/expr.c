@@ -39,6 +39,7 @@ static struct rule {
   {"\\-",TK_SUB},       // sub
   {"\\*",TK_MULTI},     // multiply
   {"/",TK_DIVI},        // Devision
+  {"Ox[A-Za-z0-9]+",TK_HEX}, //HEX
   {"\\(",TK_LPA},       // left parenthesis
   {"\\)",TK_RPA},       // right parenthesis
   {"[0-9]+",TK_DEC},    // decimal number
@@ -47,7 +48,6 @@ static struct rule {
   {"!",TK_NOT},          // !
   {"\\|\\|",TK_OR},      // ||
   {"&&",TK_AND},
-  {"Ox[A-Za-z0-9]+",TK_HEX},
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
