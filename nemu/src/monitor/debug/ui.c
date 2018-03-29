@@ -161,6 +161,7 @@ static int cmd_x(char *args){
       addr = addr + 8;
     }
   }
+  printf("\n");
   return 0;
 }
 
