@@ -33,21 +33,20 @@ static struct rule {
    * Pay attention to the precedence level of different rules.
    */
   {" +", TK_NOTYPE},    // spaces
-  {"\\+", TK_PLUS},         // plus
+  {"\\+", TK_PLUS},     // plus
+  {"!=", TK_NEQ}, 
   {"==", TK_EQ},        // equal
   //my rules
-  {"\\-",TK_SUB},       // sub
-  {"\\*",TK_MULTI},     // multiply
-  {"/",TK_DIVI},        // Devision
-  {"Ox[A-Za-z0-9]+",TK_HEX}, //HEX
-  {"\\(",TK_LPA},       // left parenthesis
-  {"\\)",TK_RPA},       // right parenthesis
-  {"[0-9]+",TK_DEC},    // decimal number
-  {"\\$[A-Za-z]+",TK_REG}, // register
-  {"!=",TK_NEQ},         //!=
-  {"!",TK_NOT},          // !
-  {"\\|\\|",TK_OR},      // ||
+  {"!", TK_NOT},
+  {"\\*", TK_MULTI},
+  {"\\-", TK_SUB},
+  {"\\(", TK_LPA},
+  {"\\)", TK_RPA},  
+  {"/",TK_DIVI},
   {"&&",TK_AND},
+  {"\\$[A-Za-z]+",TK_REG}, //register
+  {"0x[A-Za-f0-9]+",TK_HEX},
+  {"[0-9]+",TK_DEC},    //dec number
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
