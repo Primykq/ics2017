@@ -53,3 +53,5 @@ gdb: $(BINARY)
 clean: 
 	rm -rf $(BUILD_DIR)
 
+count:
+	find . | grep '\.c$$\|\.h$$' | xargs wc -l
