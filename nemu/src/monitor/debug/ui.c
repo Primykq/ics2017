@@ -127,7 +127,7 @@ static int cmd_info(char *args){
 
   return 0;
 }
-
+/*
 static int cmd_x(char *args){
   char *arg_1 = strtok(NULL, " ");
   char *arg_2 = strtok(NULL, " ");
@@ -148,6 +148,7 @@ static int cmd_x(char *args){
       for(;j < 8;j++){
 	printf("%02x",pmem[addr+j]);
       }
+      printf("%02x",vaddr_read(addr));
       printf(" ");
       j = 0;
       if(++i >= n){
@@ -162,6 +163,40 @@ static int cmd_x(char *args){
     }
   }
   printf("\n");
+  return 0;
+}
+*/
+
+static int cmd_x(char *args){
+  char *arg_1 = strtok(NULL, " ");
+  char cmd[80] = "";
+  while(true){
+    char *arg_2 = strtok(NULL, " ");
+    if(arg_2 == NULL){
+      break;
+    }
+    strcat(cmd, arg_2);
+  }
+  bool flag;
+  uint32_t re = expr(cmd, &flag);
+  if(flag == true){
+    uint32_t addr = re;
+    int temp = atoi(arg_1);
+    int count = 0;
+    for(;count < temp;count++){
+      if(count % 2 == 0){
+        printf("0x%x: ", addr);
+      }
+      printf("0x%08x ",vaddr_read(addr, 8));
+      addr += 4;
+      if(count % 2 == 1){
+        printf("\n");
+      }
+    }
+    if(count % 2 == 1){
+      printf("\n");
+    }
+  }
   return 0;
 }
 
