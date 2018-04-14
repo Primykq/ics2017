@@ -1,7 +1,6 @@
 #include "cpu/exec.h"
 
 make_EHelper(add) {
-  TODO();
 
   print_asm_template2(add);
 }
