@@ -15,3 +15,4 @@ make_EHelper(sub);
 make_EHelper(xor);
 make_EHelper(ret);
 make_EHelper(setcc);
+make_EHelper(lea);
