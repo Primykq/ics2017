@@ -94,11 +94,13 @@ static int cmd_si(char *args){
   }
   else{
     int i = atoi(arg);
-    if(i < 0){
+    if(i < -1){
       printf("illegal command '%s'\n", arg);
+      return 256;
     }
     if(i == 0){//si 0 = si
       cpu_exec(1);
+      return 0;
     }
     cpu_exec(i);
   }
