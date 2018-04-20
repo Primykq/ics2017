@@ -33,7 +33,7 @@ typedef struct {
    * in PA2 able to directly access these registers.
    */
     union{
-        union{
+        struct{
             int CF: 1;
             int ZF: 1;
             int SF: 1;
