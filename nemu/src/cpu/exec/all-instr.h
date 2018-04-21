@@ -33,3 +33,4 @@ make_EHelper(div);
 make_EHelper(idiv);
 make_EHelper(dec);
 make_EHelper(sar);
+make_EHelper(shl);
