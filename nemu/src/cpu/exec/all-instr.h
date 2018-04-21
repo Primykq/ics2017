@@ -41,3 +41,4 @@ make_EHelper(cltd);
 make_EHelper(shr);
 make_EHelper(sbb);
 make_EHelper(leave);
+make_EHelper(adc);
