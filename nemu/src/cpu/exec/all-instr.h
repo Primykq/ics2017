@@ -37,3 +37,4 @@ make_EHelper(shl);
 make_EHelper(or);
 make_EHelper(not);
 make_EHelper(cltd);
+make_EHelper(shr);
