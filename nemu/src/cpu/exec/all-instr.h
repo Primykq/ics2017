@@ -31,3 +31,4 @@ make_EHelper(mul);
 make_EHelper(inc);
 make_EHelper(div);
 make_EHelper(idiv);
+make_EHelper(dec);
