@@ -15,7 +15,6 @@ make_EHelper(sub);
 make_EHelper(xor);
 make_EHelper(ret);
 make_EHelper(setcc);
-//One night
 make_EHelper(lea);
 make_EHelper(and);
 make_EHelper(nop);
@@ -36,3 +35,4 @@ make_EHelper(sar);
 make_EHelper(shl);
 make_EHelper(or);
 make_EHelper(not);
+make_EHelper(cltd);
