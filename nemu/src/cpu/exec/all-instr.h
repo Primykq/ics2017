@@ -25,6 +25,7 @@ make_EHelper(movzx);
 make_EHelper(test);
 make_EHelper(jcc);
 make_EHelper(jmp);
-make_EHelper(imul);
+make_EHelper(imul1);
+make_EHelper(imul2);
 make_EHelper(mul);
 make_EHelper(inc);
