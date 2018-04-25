@@ -88,7 +88,7 @@ make_EHelper(dec) {
 
 make_EHelper(neg) {
   TODO();
-
+  //for push the code and anyingjingling pull the  code
   print_asm_template1(neg);
 }
 
