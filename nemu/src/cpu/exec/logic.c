@@ -86,3 +86,21 @@ make_EHelper(not) {
 
   print_asm_template1(not);
 }
+
+make_EHelper(rol){
+    rtl_shl( &t0, &id_dest->val, &id_src->val );
+    if( decoding.is_operand_size_16 ){
+        rtl_li( &t1, 0x10 - id_src->val );
+        rtl_shr( &t2, &id_dest->val, &t1 );
+    }
+    else{
+        rtl_li( &t1, 0x20 - id_src->val );
+        rtl_shr( &t2, &id_dest->val, &t1 );
+    }
+
+    rtl_or( &t0, &t0, &t2 );
+    operand_write( id_dest, &t0 );
+
+    rtl_update_ZFSF( &t0, id_dest->width );
+    print_asm_template2(rol);
+}
