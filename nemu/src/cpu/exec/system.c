@@ -26,9 +26,7 @@ make_EHelper(mov_cr2r) {
 }
 
 make_EHelper(int) {
-  TODO();
-
-  print_asm("int %s", id_dest->str);
+ TODO();
 
 #ifdef DIFF_TEST
   diff_test_skip_nemu();
@@ -45,8 +43,12 @@ uint32_t pio_read(ioaddr_t, int);
 void pio_write(ioaddr_t, int, uint32_t);
 
 make_EHelper(in) {
-  TODO();
-
+ // TODO();
+  
+  t0 = pio_read( id_src->val, id_dest->val );
+  operand_write( id_dest, &t0 );
+  
+  print_asm("int %s", id_dest->str);
   print_asm_template2(in);
 
 #ifdef DIFF_TEST
@@ -55,8 +57,8 @@ make_EHelper(in) {
 }
 
 make_EHelper(out) {
-  TODO();
-
+ // TODO();
+  pio_write( id_dest->val, id_dest->width, id_src->val );
   print_asm_template2(out);
 
 #ifdef DIFF_TEST

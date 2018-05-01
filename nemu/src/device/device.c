@@ -18,6 +18,8 @@ void init_serial();
 void init_timer();
 void init_vga();
 void init_i8042();
+uint32_t pio_read(ioaddr_t, int);
+void pio_write(ioaddr_t, int, uint32_t);
 
 extern void timer_intr();
 extern void send_key(uint8_t, bool);
