@@ -48,7 +48,6 @@ make_EHelper(in) {
   t0 = pio_read( id_src->val, id_dest->width );
   operand_write( id_dest, &t0 );
   
-  print_asm("int %s", id_dest->str);
   print_asm_template2(in);
 
 #ifdef DIFF_TEST
